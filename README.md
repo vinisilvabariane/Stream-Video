@@ -11,6 +11,9 @@
 - NGINX
 - MySQL
 - JavaScript (para o frontend)
+
+
+
 - Bootstrap (opcional para estilização)
 
 ## Protocolos
@@ -34,3 +37,6 @@
 - docker stop container-rtmp
 - docker rm container-rtmp
 - docker rmi multismv-nginx-rtmp:latest
+
+### 6. Video
+https://github.com/user-attachments/assets/6aee820d-c5bf-43c0-b0cb-c48975f1eb9c
