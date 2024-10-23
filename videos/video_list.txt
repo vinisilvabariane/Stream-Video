@@ -1,0 +1,3 @@
+file '/usr/share/nginx/html/videos/video1.mp4'
+file '/usr/share/nginx/html/videos/video2.mp4'
+file '/usr/share/nginx/html/videos/video3.mp4'

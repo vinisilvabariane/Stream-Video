@@ -1,0 +1,44 @@
+# Usar a imagem oficial do Alpine como base
+FROM alpine:latest
+
+# Instalar dependências necessárias
+RUN apk add --no-cache \
+    gcc \
+    g++ \
+    make \
+    libstdc++ \
+    pcre-dev \
+    zlib-dev \
+    openssl-dev \
+    git \
+    curl \
+    nginx \
+    ffmpeg
+
+# Clonar o repositório do módulo RTMP
+RUN git clone https://github.com/arut/nginx-rtmp-module.git /nginx-rtmp-module
+
+# Baixar e compilar o Nginx com o módulo RTMP e o módulo HTTP MP4
+RUN curl -O http://nginx.org/download/nginx-1.25.1.tar.gz && \
+    tar -zxvf nginx-1.25.1.tar.gz && \
+    cd nginx-1.25.1 && \
+    ./configure --with-http_ssl_module --with-http_mp4_module --add-module=/nginx-rtmp-module && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -rf nginx-1.25.1 nginx-1.25.1.tar.gz /nginx-rtmp-module
+
+# Criar diretórios necessários
+RUN mkdir -p /MultiSMV/hls/live /MultiSMV/videos /hls/live
+
+# Configurar permissões
+RUN chown -R nginx:nginx /MultiSMV /hls
+
+# Copiar o arquivo de configuração do Nginx
+COPY nginx.conf /usr/local/nginx/conf/nginx.conf
+
+# Expor as portas necessárias
+EXPOSE 1935 8081
+
+# Iniciar o Nginx em primeiro plano
+CMD ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
